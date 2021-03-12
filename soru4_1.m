@@ -1,28 +1,24 @@
-% grafikte iki eðri arasýnda kalan taralý alaný Matlab?de Simpson yöntemini 
-%kullanan nümerik integrasyon komutlarýný kullanarak bulunuz ve bulduðunuz 
-%sonucu el ile yapacaðýnýz analitik çözümle kýyaslayýnýz.
+%Aþaðýda verilen diferansiyel denklemi nümerik olarak Matlab ile  (0, 2) 
+%aralýðýnda çözünüz. y(x),y'(x),y''(x) ve y''' (x) vektörlerini sýrasýyla 
+%siyah düz çizgi, mavi kesik çizgi, kýrmýzý noktalý çizgi ve kýrmýzý düz ile çizdiriniz.
+
+% y'''-2y'+y=-5x  ;  y(0)=-1  ,y'(0)=2,   y''(0)=1    
+
+%y=y(1), y'=y(2), y''=y(3), y'''=y(4)
+%y(4)=-5*x-y(1)+2*y(2)
 
 %Öncelikle fonksiyon ayrý bir dosya olarak kaydedilir:
-%function y = soru4(x)
-%         y= x-x.^3;
+%function yprime=soru4(x,y)
+%yprime=[y(2);y(3);+2*y(2)-y(1)-5*x];
 %end
 
-% y1=y2 =>  x^3=x  =>  x^3-x = 0  yani  x^3 +0x^2 -x +0 = 0
-% denklemin katsayýlarý: [1 0 -1 0]
+[x,y] = ode23(@soru4,[0 2],[-1 2 1]);
+plot(x,y(:,1),'k');       %y(x) eðrisi
+hold on
+plot(x,y(:,2),'--b');     %y'(x) eðrisi
+plot(x,y(:,3),'-.r');     %y''(x) eðrisi
+y4 = -5*x(:,1) + 2*y(:,2) - y(:,1);
+plot(x,y4,'r');           %y'''(x) eðrisi
+legend('y', 'dy','ddy','dddy')
 
-% Ýki eðrinin kesiþtiði noktayý bulalým (1 çýkmasý gerekir)
-a = max(roots([1 0 -1 0]))
 
-% 0-1 arasýnda integrali alalým
-A = quad('soru4',0,1)
-
-
-
-%2. yol:
-a = max(roots([1 0 -1 0]))
-F = @(x) x-x.^3
-A2 = quad(F,0,1)
-
-%3. yol:
-a = max(roots([1 0 -1 0]))
-A3 = quad('x-x.^3',0,1)
