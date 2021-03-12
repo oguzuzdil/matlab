@@ -1,3 +1,9 @@
-A = zeros(7,5);
-A([1:2],[4:5]) = ones(2,2);
-A([3:end],[1:end]) = eye(5,5)
+x = input ('bir reel sayi giriniz');
+if x>10
+    f = x*x;
+elseif (x<=10 & x>0)
+    f = x;
+else 
+    f = -x;
+end
+f
