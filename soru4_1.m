@@ -1,24 +1,46 @@
-%Aþaðýda verilen diferansiyel denklemi nümerik olarak Matlab ile  (0, 2) 
-%aralýðýnda çözünüz. y(x),y'(x),y''(x) ve y''' (x) vektörlerini sýrasýyla 
-%siyah düz çizgi, mavi kesik çizgi, kýrmýzý noktalý çizgi ve kýrmýzý düz ile çizdiriniz.
+clear all
+clc
+clf
 
-% y'''-2y'+y=-5x  ;  y(0)=-1  ,y'(0)=2,   y''(0)=1    
+%nümerik çözüm
 
-%y=y(1), y'=y(2), y''=y(3), y'''=y(4)
-%y(4)=-5*x-y(1)+2*y(2)
-
-%Öncelikle fonksiyon ayrý bir dosya olarak kaydedilir:
-%function yprime=soru4(x,y)
-%yprime=[y(2);y(3);+2*y(2)-y(1)-5*x];
+%öncelikle fonksiyon ayrý bir dosya olarak kaydedilir
+%function f = soru4(tn,yn);
+%f = [yn(2); -4*yn(2)-3*yn(1)+tn];
 %end
 
-[x,y] = ode23(@soru4,[0 2],[-1 2 1]);
-plot(x,y(:,1),'k');       %y(x) eðrisi
-hold on
-plot(x,y(:,2),'--b');     %y'(x) eðrisi
-plot(x,y(:,3),'-.r');     %y''(x) eðrisi
-y4 = -5*x(:,1) + 2*y(:,2) - y(:,1);
-plot(x,y4,'r');           %y'''(x) eðrisi
-legend('y', 'dy','ddy','dddy')
+%daha sonra bu fonksiyon çaðýrýlýrak aþaðýdaki iþlemler yapýlýr:
+xn_aralik = [-1,3];
+yn_baslangic = [0;1];
+[x,yn] = ode23('soru4',xn_aralik, yn_baslangic);
 
+%sembolik çözüm
 
+syms y t
+eqn = 'D2y+4*Dy+3*y=t';
+baslangic ='y(0)=1,Dy(0)=0';
+y = dsolve(eqn,baslangic,'t');
+yprime = diff(y);
+y_doubleprime = diff(y,2);
+
+t = linspace(-1,3);
+Y = eval(vectorize(y));
+Y_prime = eval(vectorize(yprime));
+Y_doubleprime = eval(vectorize(y_doubleprime));
+
+plot(t,Y,'k')
+xlim([-1 3])
+ylim([-3 3])
+legend('y','Location','southeast')
+
+figure
+plot(t,Y_prime,'k',x,yn(:,1),'ro')
+xlim([-1 3])
+ylim([-3 3])
+legend('yprime','ynumericprime','Location','southeast')
+
+figure
+plot(t,Y_doubleprime,'k',x,yn(:,2),'ro')
+xlim([-1 3])
+ylim([-3 3])
+legend('ydoubleprime','ynumericdoubleprime','Location','southeast')
