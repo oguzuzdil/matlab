@@ -1,15 +1,30 @@
-clear all
-close all
-X = [3 9 27]; %baðýmlý deðiþkenler
-Y = [10 8 6];
-Z = [4 4 4];
-t = [1 2 3]; %baðýmsýz deðiþken
-figure
-hold on  %tüm vektörlerin ayný figür üzerine çizilmesini saðlar
+%Aþaðýdaki 2. derece adi diferansiyel denklemi çözelim ve sonuçlarý çizdirelim:
+% y"(x) + 8*y'(x) + 2*y(x) = cos(x)  % en büyük olan yalnýz býrakýlýr!!!
+% y(0)=1, y'(0)=0     %baþlangýç koþullarý
 
-plot(t, X, 'b', t, Y, 'r', t, Z, 'g')
-title('zamana gore mesafe degisimi')  %baþlk
-xlabel('Zaman(s)') %z eksen baþlýðý
-ylabel('Mesafe(m)') %y eksen baþlýð
-legend('Arac 1', 'Arac 2', 'Arac 3')
-legend('Location', 'NorthWest') %Lejantý kuzey doðu köþeye taþý 
+
+% y1'(x) = y2(x)
+% y2'(x) = -8*y2(x) - 2*y1(x) + cos(x)
+
+
+
+%Öncelikle fonksiyon ayrý bir dosya olarak kaydedilir
+
+%function yprime = secondode(x,y);
+%yprime = [y(2); -8*y(2)-2*y(1)+cos(x)];
+%end
+
+clear all
+clc
+xspan = [0, 0.5];
+y0 = [1; 0];
+[x,y]=ode23('secondode',xspan,y0);
+[x,y]
+
+%grafikte hata var?
+plot(x,y(:,1), 'r-*')
+xlabel('x')
+ylabel('y'), grid on
+hold on
+plot(x,y(:,2), 'b-+')
+legend('y1','y2','Location','southeast')

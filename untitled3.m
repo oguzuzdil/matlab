@@ -1,16 +1,20 @@
-clc
-clear all
+%Aþaðýda verilen adi diferans,yel denklemi çözünüz:
 
-A=[1 5 6; 7 -3 9; -4 0 8];
-for t=1:size(A,1)
-    for g=1:size(A,2)
-        if A(t,g)==0
-            satir_numarasi=t;
-            sutun_numarasi=g;
-            break
-        end
-    end
-end
-disp(satir_numarasi)
-disp(sutun_numarasi)
-            
+% x'(t) = x(t) + 2y(t) - z(t)
+% y'(t) = x(t) + z(t)
+% z'(t) = 4x(t) - 4y(t) + 5z(t)
+
+% Baþlangýç koþullarý:
+% x(0) = 1, y(0) = 2, ve z(0) = 3
+
+inits = ' x(0)=1 , y(0)=2 , z(0) =3 '
+
+
+[x,y,z] = dsolve('Dx=x+2*y-z','Dy=x+z','Dz=4*x-4*y+5*z',inits) 
+
+
+t=linspace(0,0.5,25);
+xx=eval(vectorize(x));
+yy=eval(vectorize(y));
+zz=eval(vectorize(z));
+plot(t, xx, t, yy, t, zz)
