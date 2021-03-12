@@ -1,20 +1,41 @@
-%Aþaðýda verilen adi diferans,yel denklemi çözünüz:
+% z = cos(2*x).*y.^3+1; fonksiyonu çizdirilmektedir
 
-% x'(t) = x(t) + 2y(t) - z(t)
-% y'(t) = x(t) + z(t)
-% z'(t) = 4x(t) - 4y(t) + 5z(t)
+x = linspace(0,2,15);
+y = linspace(-pi/3,pi/3,15);
+[xx,yy] = meshgrid(x,y);  
+zz = yuzey(xx,yy);   %yüzey adlý alt programa bakýlsýn
+mesh(xx,yy,zz)   %mesh grafiði çizdirir
+xlabel('x')
+ylabel('y')
+zlabel('z')
+%buraya kadar grafik çizdiriliyor
 
-% Baþlangýç koþullarý:
-% x(0) = 1, y(0) = 2, ve z(0) = 3
+%yuzey.m adlý altprogram:
+%function k = yuzey(x,y)   %yuzey.m, iki deðiþkenli bir fonksiyonu hesaplar
+%k = cos(2*x).*y.^+1;
 
-inits = ' x(0)=1 , y(0)=2 , z(0) =3 '
+%yuzey.m adlý altprogram ilen verilen z=f(x,y) fonksiyonunun 0<=x<=2,
+%-pi/3<=y<=pi/3 aralýðýndaki integrali aþaðýdaki program satýrý ile
+%hesaplanabilir:
+dblquad('yuzey',0,2,-pi/3,pi/3) %integrasyonu hesaplar
 
 
-[x,y,z] = dsolve('Dx=x+2*y-z','Dy=x+z','Dz=4*x-4*y+5*z',inits) 
+%Yukarýdaki program, alt program kullanmadan aþaðýdaki gibi de yazýlabilir:
+figure
+x = linspace(0,2,15);
+y = linspace(-pi/3,pi/3,15);
+[X,Y] = meshgrid(x,y);   %meshgrid bir fonksiyondur, fonksiyon çaðýrýlýyor
+Z = cos(2*X).*Y.^3+1;
+mesh(X,Y,Z)   %mesh = að
+xlabel('X')   %15x15=225 X deðeri var
+ylabel('Y')   %15x15=225 Y deðeri var
+zlabel('Z')   %15x15=225 Z deðeri var
+%buraya kadar grafik çizimi
+
+dblquad('cos(2*x).*y.^3+1',0,2,-pi/3,pi/3)
+
+%analitik olarak:
+fun = @(x,y) cos(2*x).*y.^3+1   %fonksiyon fuction handle kullanarak oluþturuluyor
+dblquad(fun,0,2,-pi/3,pi/3)
 
 
-t=linspace(0,0.5,25);
-xx=eval(vectorize(x));
-yy=eval(vectorize(y));
-zz=eval(vectorize(z));
-plot(t, xx, t, yy, t, zz)

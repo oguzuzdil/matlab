@@ -1,10 +1,23 @@
-sayi = input('1-24 arasinda bir tam sayi giriniz=');
-switch (sayi)
-    case {5,6}, 'sabaha karsi'
-    case {7,8,9,10}, 'sabah vakti'
-    case {11,12,13}, 'ogle vakti'
-    case {14,15,16,17}, 'ogleden sonra'
-    case {18,19,20,21}, 'aksam vakti'
-    case {22,23,24,1,2,3,4}, 'gece vakti'
-    otherwise 'sayi 1-24 araliginin disinda'
-end
+x= [ -2 , 0 , 3, 7 , 11, 16] ;     % boyut 6
+y= [ 1 , 3, 8 , 12 , 18, 25 ] ;    % boyut 6
+
+dx=diff(x)                  % delta_x fark vektörü hesaplanýyor
+% sonucun boyutu 5 [(x(2)-x(1)) (x(3)-x(2))... iþlemi yapýldýðý için]
+
+dy=diff(y)                   % delta_y fark vektörü hesaplanýyor 
+% sonucun boyutu 5
+
+df=diff(y)./diff(x)          % türev hesaplanýyor (türevin hesaplanabilmesi için x ve y'nin boyutlarý eþit olmalý)
+
+
+%Geri Fark için
+xd =x(2:end) 
+
+%Ýleri Fark için
+xd =x(1:end-1) 
+
+%merkezi farklar için x vektöründe 0 alýnabilir. Fakat -2 alýnamaz. Çünkü
+%önceki deðeri yok. Merkeziye göre türev deðeri daha doðru.
+%aralýklar küçükse merkezi,ileri ve geri arasýnda sonuç farký az olur.
+%merkezi fark:
+%3'ten 16'ya kadar, -2'den 7'ye kadar

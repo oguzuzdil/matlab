@@ -1,15 +1,14 @@
-% a = [0.3 2 -1 4 -5 0.1 8 -3.4 7 -2.3] vektörünün negatif elemanlarýný
-% sayýp sonucu b adlý deðiþkene, sýfýr ve pozitif elemanlarýný sayýp c adlý
-%deðiþkene atayan bir program yazýnýz.
+%Aþaðýda verilen program satýrlatýnda, cos(x) eðrisinin x=-pi/2 : pi/2
+%arasýnda kalan alan hesabý, bu aralýk 10 eþit parçaya bölünerek ve
+%yamuklar yöntemi kullanýlarak yapýlmaktadýr:
 
-a = [0.3 2 -1 4 -5 0.1 8 -3.4 7 -2.3];
-b=0;c=0;
-for k=1:length(a)
-    if a(k)<0
-        b=b+1;
-    else
-        c=c+1;
-    end
-end
-b
-c
+x = linspace(-pi/2,pi/2,10)   %[-pi/2 pi/2] aralýðýnda 10 aralýk olarak hesaplanýyor
+y = cos(x)
+trapz(x,y)
+plot(x,y)
+
+sin(pi/2)-sin(-pi/2) %analiztik çözüm, kesin çözüm
+
+%x = linspace(-pi/2,pi/2,10000) %nümerik çözüm, aralýk artýrýldýkça analitik çözüme
+%yaklaþýlýr; fakat aralýk artýrýldýkça nümerik hatalar, yuvarlama hatalarý
+%artabilir.

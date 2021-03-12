@@ -1,13 +1,18 @@
-% y''(x) + 8y'(x) + 2y(x) = cos(x)
-% y(0)=1, y?(0)=0
+% integral 2'den 8'e(1/(x^5+x^2+15x-6))dx integrali
 
+%1)Tek deðiþkenli bir fonksiyon direkt olarak 'fonksiyon' yerine yazýlýr:
+alan = quad('1./(x.^5+x.^2+15*x-6)',2,8)
 
+%2)inline komutu ile:
+F = inline('1./(x.^5+x.^2+15*x-6)');
+alan = quad(F,2,8)
 
-eqn2 = 'D2y + 8*Dy + 2*y = cos(x)';
-inits2 = 'y(0)=1, Dy(0)=0';
-y = dsolve(eqn2,inits2,'x')
+%3)fonksiyonu alt programda tanýmlayarak:
+%function y = altfonk(x)
+%y = 1./(x.^5+x.^2+15*x-6);
 
-%plot icin:
-x = linspace(0,1,20);
-z = eval(vectorize(y));
-plot(x,z)
+alan = quad('altfonk',2,8)
+
+%4)function handle ile:
+F = @(x) 1./(x.^5+x.^2+15*x-6);
+Q = quad(F,2,8)
