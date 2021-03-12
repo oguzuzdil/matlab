@@ -1,23 +1,48 @@
-x= [ -2 , 0 , 3, 7 , 11, 16] ;     % boyut 6
-y= [ 1 , 3, 8 , 12 , 18, 25 ] ;    % boyut 6
+% GAUSS ELÝMÝNASYON YÖNTEMÝ ÝLE Ax=B LÝNEER EÞÝTLÝÐÝNÝN ÇÖZÜLMESÝ
+% pivotlama kullanýlýyor
+% A matrisi N*N boyutunda tekil olmayan katsayýlar matrisidir
+% B matrisi N*1 boyutundadýr
+% x matrisi N*1 boyutunda çözüm matrisidir
+% x matrisinin eleman deðerleri baþlangýçta sýfýr alýnmaktadýr
+% C matrisi program içinde deçici olarak kullanýlmaktadýr
 
-dx=diff(x)                  % delta_x fark vektörü hesaplanýyor
-% sonucun boyutu 5 [(x(2)-x(1)) (x(3)-x(2))... iþlemi yapýldýðý için]
+A = [1 -2 4 -3; 2 1 5 2; -6 2 1 4; 1 -2 8 4]; B = [1 ; 3 ; -1 ; 5];
+[N N] = size(A);
+x = zeros(N,1);
+C = zeros (1,N+1);
 
-dy=diff(y)                   % delta_y fark vektörü hesaplanýyor 
-% sonucun boyutu 5
+% Aþaðýda geniþletilmiþ [A|B] matrisi oluþturulmaktadýr
 
-df=diff(y)./diff(x)          % türev hesaplanýyor (türevin hesaplanabilmesi için x ve y'nin boyutlarý eþit olmalý)
+genis = [A B];
+for p=1:N-1;
+    % p kolonu için kýsmi pivotlama yapýlýyor
+    [Y,J] = max(abs(genis(p:N,p)));
+    % p ve J kolonlarýnýn yerleri deðiþtiriliyor
+    C = genis(p,:);
+    genis(p,:) = genis(J+p-1,:);
+    genis (J+p-1,:) = C;
+    
+    if genis(p,p)==0
+        disp('A matrisi tekil oldugu icin program durduruluyor')
+        break
+    end
+    % p. kolon için eliminasyon baþlýyor
+    for k = p+1:N
+        m = genis(k,p)/genis(p,p);
+        genis(k,p:N+1) = genis(k,p:N+1) - m*genis(p,p:N+1);
+    end
+end
+% yerine koyma iþlemi baþlýyor
+A = genis(1:N,1:N);
+B = genis(1:N,N+1);
+x(N) = B(N)/A(N,N);
+for k = N-1:-1:1
+    x(k) = (B(k)-A(k,k+1:N)*x(k+1:N))/A(k,k);
+end
+x
 
+% Lineer denklem sistemlerinin çözümü için '\' veya mldivide() kullanýlýr
+% A.x=B  çözümü : x=A\B    veya    mldivide(A,B)    kullanýlýr
 
-%Geri Fark için
-xd =x(2:end) 
-
-%Ýleri Fark için
-xd =x(1:end-1) 
-
-%merkezi farklar için x vektöründe 0 alýnabilir. Fakat -2 alýnamaz. Çünkü
-%önceki deðeri yok. Merkeziye göre türev deðeri daha doðru.
-%aralýklar küçükse merkezi,ileri ve geri arasýnda sonuç farký az olur.
-%merkezi fark:
-%3'ten 16'ya kadar, -2'den 7'ye kadar
+        
+    
