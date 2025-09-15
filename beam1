@@ -1,0 +1,107 @@
+clc
+clear all
+
+% Boolean is one of the object-based variable types.
+% The main advantage of object-type variables is that they can 
+% perform operations using their sub-methods.
+% However, since these types of variables occupy more memory 
+% compared to primitive variable types, they should not be used 
+% unless necessary.
+% Boolean variables are used in logical operations.
+% They only have two possible values: true or false.
+% The default value is false, and for object references it is null.
+% In logical operations, true or false values can be defined directly, 
+% or the result (true or false) can be determined within the program 
+% by comparing other variables using logical operations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+b = 300;       % beam width (mm)
+h = 500;       % beam height (mm)
+fck = 25;      % characteristic compressive strength of concrete (MPa)
+fyk = 420;     % characteristic yield strength of reinforcement (MPa)
+g = 20;        % dead load (kN/m)
+q = 15;        % live load (kN/m)
+l = 5;         % beam span (m)
+roMax = 0.02;  % maximum reinforcement ratio
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+P = 1.4*g + 1.6*q;         % calculation of design load
+fcd = fck/1.5;             % design compressive strength of concrete (MPa)
+fyd = fyk/1.15;            % design yield strength of reinforcement (MPa)
+d = h-34;                  % effective depth
+M = P*l*l/8;               % calculation of design bending moment (N.mm)
+fctd = (0.35*sqrt(fck))/1.5;
+
+% Calculation of equivalent stress block depth
+a = d - sqrt(d*d - (2*M*10^6/(0.85*fcd*b)));
+
+disp(['a = ' num2str(a)]);
+
+disp(['h = ' num2str(h)]);
+
+gerilmeBlogu = a<h;
+
+disp(['a<h => ' num2str(gerilmeBlogu)]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+if a<h 
+    disp('true')
+else
+    disp('false')
+end
+
+as=0.85*fcd*b*a/fyd;   
+
+disp(['As = ' num2str(as)]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ro = as/(b*d);
+
+disp(['ro = ' num2str(ro)]);
+
+roMin = 0.8*fctd/fyd;  % minimum reinforcement ratio
+
+minDonatiOrani = ro >= roMin;
+
+disp(['ro >= ro_Min =>  ' num2str(minDonatiOrani)]);
+
+asMin = roMin*b*d;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+disp(['As_Min =  ' num2str(asMin)]);
+
+minDonati = as > asMin;
+
+disp(['As > As_Min => ' num2str(minDonati)]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+asMax = roMax*b*d;
+
+disp(['As_Max = ' num2str(asMax)]);
+
+maxDonatiOrani = ro <= roMax;
+
+disp(['ro <= ro_Max =>' num2str(maxDonatiOrani)]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+maxDonati = as < asMax;
+
+disp(['As < As_Max =>' num2str(maxDonati)]);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+kirisGenisligi1 = true;
+kirisGenisligi2 = false;
+
+if(b>=250)
+    disp(['Beam Width : ' num2str(kirisGenisligi1)]);
+else
+    disp(['Beam Width : ' num2str(kirisGenisligi2)]);
+end
